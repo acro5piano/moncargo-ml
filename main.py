@@ -1,7 +1,6 @@
 from sklearn import svm,metrics
 from sklearn.model_selection import train_test_split
 
-import numpy as np
 import pandas as pd
 
 df = pd.read_csv('/home/kazuya/ghq/github.com/acro5piano/moncargo/frontend/machine-learning/prepared.csv', delimiter=',')
