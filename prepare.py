@@ -1,32 +1,23 @@
-from typing import List, cast
-from sklearn import svm, metrics
-from sklearn.neural_network import MLPClassifier
-from sklearn.model_selection import train_test_split
-
 import pandas as pd
 
-df = pd.read_csv('/home/kazuya/ghq/github.com/acro5piano/moncargo/frontend/machine-learning/prepared.csv', delimiter=',')
-
-X = df
-y = df['Y']
-
-splitted = train_test_split(X, y, test_size=0.2, random_state=42)
-X_train, X_test, y_train, y_test = cast(List[pd.DataFrame], splitted)
-
-clf = MLPClassifier(hidden_layer_sizes=(i, ii))
-
-
-clf.fit(X_train.iloc[:, 4:24], y_train)
-
-predicted = clf.predict(X_test.iloc[:, 4:24])
-
-print(
-    f"Classification report for classifier {clf}:\n"
-    f"{metrics.classification_report(y_test, predicted)}\n"
+df = pd.read_csv(
+    "./data_for_machine_learning_2023-11-05T01_13_45.27414546Z.csv", delimiter=","
 )
-print(i, ii)
 
-test_result = X_test.iloc[:, 0:4]
-test_result['Y_predicted'] = predicted
-test_result.to_csv('./result.csv')
+df = df[["website_type", "tracking_type", "tracking_number"]]
 
+df["Y"] = df.apply(
+    lambda row: row["website_type"] + "__" + row["tracking_type"], axis=1
+)
+
+df["Y"] = pd.factorize(df["Y"].astype("category"))[0]
+
+for i in range(0, 20):
+    df["X" + str(i)] = df.apply(
+        lambda row: 0
+        if len(row["tracking_number"]) <= i
+        else ord(row["tracking_number"][i]),
+        axis=1,
+    )
+
+df.to_csv("./prepared.csv", index=False)

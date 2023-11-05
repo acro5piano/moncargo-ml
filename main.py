@@ -6,7 +6,7 @@ from sklearn.model_selection import train_test_split
 from sklearn.neural_network import MLPClassifier
 
 df = pd.read_csv(
-    "/home/kazuya/ghq/github.com/acro5piano/moncargo/frontend/machine-learning/prepared.csv",
+    "./prepared.csv",
     delimiter=",",
 )
 
